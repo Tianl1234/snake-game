@@ -9,6 +9,7 @@
 # - Themes: Hell / Dunkel (über Startdialog)
 # - Wählbare Spielfeldgröße (20x20, 30x30)
 # - Geschwindigkeitsstufen (langsam, normal, schnell)
+# - Jeder gefressene rote Punkt zählt 1 Punkt
 # - Kein Konsolenfenster (automatisch versteckt)
 
 import sys
@@ -247,10 +248,11 @@ class SnakeGame:
         # Fressen?
         if new_head == self.food:
             self.snake.insert(0, new_head)
-            self.score += 10
+            self.score += 1  # Jetzt zählt jeder Punkt als 1
             self.food = self.place_food()
-            # Highscore prüfen (aktualisieren, aber noch nicht speichern)
+            # Prüfen, ob neuer Highscore erreicht wurde (während des Spiels)
             if self.score > self.highscore.get(self.highscore_key, 0):
+                self.highscore[self.highscore_key] = self.score
                 self.highscore_label.config(text=f"Highscore: {self.score}")
         else:
             self.snake.insert(0, new_head)
